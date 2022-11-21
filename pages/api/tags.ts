@@ -22,6 +22,8 @@ export default async function handler(
       } else {
         return getTags(req, res);
       }
+    case 'POST':
+      return createTag(req, res);
     default:
       return res.status(400).json({
         success: false,
@@ -55,5 +57,19 @@ const getTags = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   } catch (err: any) {
     console.error(Error(err));
+  }
+};
+
+const createTag = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  try {
+    await db.connect();
+
+    const data = await TagModel.create({ label: req.body.label });
+    res.status(200).json({ success: true, tag: data });
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+    res.status(500).json({ success: false, message: err });
   }
 };

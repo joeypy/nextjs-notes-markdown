@@ -1,38 +1,69 @@
 import React, { useMemo } from 'react';
+import { GetServerSideProps } from 'next';
 import { NewNote } from '../../components/NewNote';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { TRawNote, TNoteData, TTag } from '../../interfaces/notes.interfaces';
-import { v4 as uuidV4 } from 'uuid';
+import { db } from '../../database';
+import { NoteModel, TagModel } from '../../models';
+import { NoteForm } from '../../components';
+import { Axios } from '../../services/objectRequest';
 
-const NewNotePage = () => {
-  const [notes, setNotes] = useLocalStorage<TRawNote[]>('NOTES', []);
-  const [tags, setTags] = useLocalStorage<TTag[]>('TAGS', []);
+interface Props {
+  onSubmit: (data: TNoteData) => void;
+  onAddTag: (tag: TTag) => void;
+  availableTags: TTag[];
+}
 
-  const notesWithTags = useMemo(() => {
-    return notes.map((note) => {
-      return {
-        ...note,
-        tags: tags.filter((tag) => note.tagIds.includes(tag._id)),
-      };
-    });
-  }, [notes, tags]);
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  let dataNotes: any = [];
+  let dataTags: any = [];
 
-  const onCreateNote = ({ tags, ...data }: TNoteData) => {
-    setNotes((prevNotes) => {
-      return [
-        ...prevNotes,
-        { ...data, _id: uuidV4(), tagIds: tags.map((tag) => tag._id) },
-      ];
-    });
+  try {
+    await db.connect();
+
+    dataNotes = await NoteModel.find().populate('tags').lean();
+    dataTags = await TagModel.find().lean().select('_id label');
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+  }
+
+  return {
+    props: {
+      notes: JSON.stringify(dataNotes),
+      tags: JSON.stringify(dataTags),
+    },
+  };
+};
+
+const NewNotePage = ({ notes, tags }: any) => {
+  const onCreateNote = async (data: any) => {
+    try {
+      await Axios.post('/api/notes', { ...data });
+    } catch (err: any) {
+      console.error(Error(err));
+    }
   };
 
-  const addTag = (tag: TTag) => {
-    setTags((prev) => [...prev, tag]);
+  const addTag = async (label: string) => {
+    try {
+      const { data } = await Axios.post('/api/tags', { label });
+      return data.tag;
+    } catch (err: any) {
+      console.error(Error(err));
+    }
   };
 
   return (
     <div>
-      <NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags} />
+      <h1 className="mb-4">New note</h1>
+      <NoteForm
+        onSubmit={onCreateNote}
+        onAddTag={addTag}
+        availableTags={JSON.parse(tags)}
+      />
     </div>
   );
 };

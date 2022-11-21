@@ -3,27 +3,27 @@ import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
 import CreatableReactSelect from 'react-select/creatable';
 import { TNoteData, TTag } from '../interfaces/notes.interfaces';
-import { v4 as uuidV4 } from 'uuid';
 import { useRouter } from 'next/router';
 
 interface IProps {
-  onSubmit: (data: TNoteData) => void;
-  onAddTag: (tag: TTag) => void;
+  onSubmit: (data: any) => void;
+  onAddTag: (label: string) => any;
   availableTags: TTag[];
 }
 
 export const NoteForm = ({ onSubmit, onAddTag, availableTags }: IProps) => {
+  const [newTags, setNewTags] = useState(availableTags);
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<TTag[]>([]);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
+    await onSubmit({
       title: titleRef.current!.value,
       markdown: markdownRef.current!.value,
-      tags: selectedTags,
+      tags: selectedTags.map((tag) => tag._id),
     });
     router.replace('..');
   };
@@ -42,17 +42,18 @@ export const NoteForm = ({ onSubmit, onAddTag, availableTags }: IProps) => {
             <Form.Group controlId="tags">
               <Form.Label>Tags</Form.Label>
               <CreatableReactSelect
+                className="text-capitalize"
                 isMulti
                 value={selectedTags.map((tag) => ({
                   label: tag.label,
                   value: tag._id,
                 }))}
-                onCreateOption={(label) => {
-                  const newTag = { _id: uuidV4(), label };
-                  onAddTag(newTag);
+                onCreateOption={async (label) => {
+                  let newTag = await onAddTag(label);
                   setSelectedTags((prev) => [...prev, newTag]);
+                  setNewTags((prev) => [...prev, newTag]);
                 }}
-                options={availableTags.map((tag) => {
+                options={newTags.map((tag) => {
                   return { label: tag.label, value: tag._id };
                 })}
                 onChange={(tags) => {

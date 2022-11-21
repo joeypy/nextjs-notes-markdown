@@ -7,6 +7,7 @@ type Data = {
   success: boolean;
   message?: string;
   data?: any;
+  error?: any;
 };
 
 export default async function handler(
@@ -18,10 +19,12 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       if (id) {
-        return getNotesById(req, res);
+        return getNoteById(req, res);
       } else {
         return getNotes(req, res);
       }
+    case 'POST':
+      createNote(req, res);
     default:
       return res.status(400).json({
         success: false,
@@ -30,10 +33,7 @@ export default async function handler(
   }
 }
 
-const getNotesById = async (
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) => {
+const getNoteById = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { id } = req.query;
 
   try {
@@ -58,5 +58,22 @@ const getNotes = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   } catch (err: any) {
     console.error(Error(err));
+  }
+};
+
+const createNote = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  console.log(req.body);
+  res.status(200).json({ success: true });
+
+  try {
+    await db.connect();
+
+    const data = await NoteModel.create(req.body);
+    res.status(200).json({ success: true, data });
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+    res.status(400).json({ success: false, error: err });
   }
 };
