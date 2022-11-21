@@ -7,22 +7,14 @@ import { NoteModel, TagModel } from '../../models';
 import { NoteForm } from '../../components';
 import { Axios } from '../../services/objectRequest';
 
-interface Props {
-  onSubmit: (data: TNoteData) => void;
-  onAddTag: (label: string) => any;
-  availableTags: TTag[];
-}
-
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  let dataNotes: any = [];
   let dataTags: any = [];
 
   try {
     await db.connect();
 
-    dataNotes = await NoteModel.find().populate('tags').lean();
     dataTags = await TagModel.find().lean().select('_id label');
 
     await db.disconnect();
@@ -32,13 +24,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      notes: JSON.stringify(dataNotes),
       tags: JSON.stringify(dataTags),
     },
   };
 };
 
-const NewNotePage = ({ notes, tags }: any) => {
+const NewNotePage = ({ tags }: any) => {
   const onCreateNote = async (data: any) => {
     try {
       await Axios.post('/api/notes', { ...data });

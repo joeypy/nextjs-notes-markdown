@@ -62,9 +62,6 @@ const getNotes = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 };
 
 const createNote = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  console.log(req.body);
-  res.status(200).json({ success: true });
-
   try {
     await db.connect();
 
