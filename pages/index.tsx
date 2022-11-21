@@ -1,7 +1,13 @@
-export default function HomePage () {
+import { NoteList } from '../components';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { TTag } from '../interfaces/notes.interfaces';
+
+export default function HomePage() {
+  const [tags, setTags] = useLocalStorage<TTag[]>('TAGS', []);
+
   return (
     <div className="container">
-      <h1>Hola mundo</h1>
+      <NoteList availableTags={tags} />
     </div>
   );
 }
