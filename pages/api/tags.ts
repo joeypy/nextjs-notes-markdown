@@ -7,6 +7,7 @@ type Data = {
   success: boolean;
   message?: string;
   data?: any;
+  tag?: any;
 };
 
 export default async function handler(

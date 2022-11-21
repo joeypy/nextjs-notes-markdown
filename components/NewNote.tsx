@@ -4,7 +4,7 @@ import { NoteForm } from './NoteForm';
 
 interface Props {
   onSubmit: (data: TNoteData) => void;
-  onAddTag: (tag: TTag) => void;
+  onAddTag: (label: string) => any;
   availableTags: TTag[];
 }
 
