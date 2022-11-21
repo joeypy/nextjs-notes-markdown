@@ -24,7 +24,7 @@ export default async function handler(
         return getNotes(req, res);
       }
     case 'POST':
-      createNote(req, res);
+      return createNote(req, res);
     default:
       return res.status(400).json({
         success: false,
