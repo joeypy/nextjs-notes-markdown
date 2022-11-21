@@ -1,9 +1,9 @@
 export type TNote = {
-  id: string;
+  _id: string;
 } & TNoteData;
 
 export type TRawNote = {
-  id: string;
+  _id: string;
 } & TRawNoteData;
 
 export type TRawNoteData = {
@@ -19,6 +19,6 @@ export type TNoteData = {
 };
 
 export type TTag = {
-  id: string;
+  _id: string;
   label: string;
 };

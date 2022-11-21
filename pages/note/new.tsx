@@ -12,7 +12,7 @@ const NewNotePage = () => {
     return notes.map((note) => {
       return {
         ...note,
-        tags: tags.filter((tag) => note.tagIds.includes(tag.id)),
+        tags: tags.filter((tag) => note.tagIds.includes(tag._id)),
       };
     });
   }, [notes, tags]);
@@ -21,7 +21,7 @@ const NewNotePage = () => {
     setNotes((prevNotes) => {
       return [
         ...prevNotes,
-        { ...data, id: uuidV4(), tagIds: tags.map((tag) => tag.id) },
+        { ...data, _id: uuidV4(), tagIds: tags.map((tag) => tag._id) },
       ];
     });
   };
@@ -32,7 +32,7 @@ const NewNotePage = () => {
 
   return (
     <div>
-      <NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags}/>
+      <NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags} />
     </div>
   );
 };

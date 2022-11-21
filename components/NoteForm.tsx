@@ -45,19 +45,19 @@ export const NoteForm = ({ onSubmit, onAddTag, availableTags }: IProps) => {
                 isMulti
                 value={selectedTags.map((tag) => ({
                   label: tag.label,
-                  value: tag.id,
+                  value: tag._id,
                 }))}
                 onCreateOption={(label) => {
-                  const newTag = { id: uuidV4(), label };
+                  const newTag = { _id: uuidV4(), label };
                   onAddTag(newTag);
                   setSelectedTags((prev) => [...prev, newTag]);
                 }}
                 options={availableTags.map((tag) => {
-                  return { label: tag.label, value: tag.id };
+                  return { label: tag.label, value: tag._id };
                 })}
                 onChange={(tags) => {
                   setSelectedTags(
-                    tags.map((tag) => ({ label: tag.label, id: tag.value }))
+                    tags.map((tag) => ({ label: tag.label, _id: tag.value }))
                   );
                 }}
               />

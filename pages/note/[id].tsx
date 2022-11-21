@@ -11,13 +11,13 @@ import { NoteModel } from '../../models';
 import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { _id } = ctx.query;
+  const { id } = ctx.query;
   let data = {};
 
   try {
     await db.connect();
 
-    data = await NoteModel.findOne({ _id }).lean();
+    data = await NoteModel.findOne({ _id: id }).populate('tags').lean();
 
     await db.disconnect();
   } catch (err: any) {
@@ -26,36 +26,32 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      note: data,
+      note: JSON.stringify(data),
     },
   };
 };
 
 const NoteByIdPage = ({ note }: any) => {
-  const [notes] = useLocalStorage<TRawNote[]>('NOTES', []);
-  const [tags] = useLocalStorage<TTag[]>('TAGS', []);
-  const router = useRouter();
-  const { id } = router.query;
+  // const [notes] = useLocalStorage<TRawNote[]>('NOTES', []);
+  // const [tags] = useLocalStorage<TTag[]>('TAGS', []);
 
-  const notesWithTags = useMemo(() => {
-    return notes.map((note) => {
-      return {
-        ...note,
-        tags: tags.filter((tag) => note.tagIds.includes(tag.id)),
-      };
-    });
-  }, [notes, tags]);
+  // const notesWithTags = useMemo(() => {
+  //   return notes.map((note) => {
+  //     return {
+  //       ...note,
+  //       tags: tags.filter((tag) => note.tagIds.includes(tag._id)),
+  //     };
+  //   });
+  // }, [notes, tags]);
 
-  // const note = notesWithTags.find((n) => n.id == id);
+  // const note = notesWithTags.find((n) => n._id == _id);
   // if (note == null && process.browser) {
   //   router.push('/');
   // }
 
-  
-
   return (
     <>
-      <Note data={note!} />
+      <Note data={JSON.parse(note)} />
     </>
   );
 };

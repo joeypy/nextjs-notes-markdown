@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../database';
-import { NoteModel } from '../../models';
+import { TagModel } from '../../models';
 
 type Data = {
   success: boolean;
@@ -18,9 +18,9 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       if (id) {
-        return getNotesById(req, res);
+        return getTagById(req, res);
       } else {
-        return getNotes(req, res);
+        return getTags(req, res);
       }
     default:
       return res.status(400).json({
@@ -30,16 +30,13 @@ export default async function handler(
   }
 }
 
-const getNotesById = async (
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) => {
+const getTagById = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { id } = req.query;
 
   try {
     await db.connect();
 
-    const data = await NoteModel.findOne({ _id: id }).lean();
+    const data = await TagModel.findOne({ _id: id }).lean();
     res.status(200).json({ success: true, data });
 
     await db.disconnect();
@@ -48,11 +45,11 @@ const getNotesById = async (
   }
 };
 
-const getNotes = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const getTags = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   try {
     await db.connect();
 
-    const data = await NoteModel.find().populate('tags').lean();
+    const data = await TagModel.find().lean();
     res.status(200).json({ success: true, data });
 
     await db.disconnect();

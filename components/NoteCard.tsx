@@ -8,11 +8,13 @@ interface Props {
   note: TNote;
 }
 
-export const NoteCard = ({ note: { id, title, tags } }: Props) => {
+export const NoteCard = ({ note }: Props) => {
+  const { _id, title, tags } = note;
+
   return (
     <Card
       as={Link}
-      href={`note/${id}`}
+      href={`note/${_id}`}
       className={`h-100 text-reset text-decoration-none ${styles.card}`}
     >
       <Card.Body>
@@ -28,7 +30,7 @@ export const NoteCard = ({ note: { id, title, tags } }: Props) => {
               className="justify-content-center flex-wrap"
             >
               {tags.map((tag) => (
-                <Badge key={tag.id}>{tag.label}</Badge>
+                <Badge key={tag._id}>{tag.label}</Badge>
               ))}
             </Stack>
           )}
