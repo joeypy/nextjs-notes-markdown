@@ -15,23 +15,11 @@ export const NoteList = ({ notes, tags }: Props) => {
   const [selectedTags, setSelectedTags] = useState<TTag[]>([]);
   const [title, setTitle] = useState('');
 
-  // const notesWithTags = useMemo(() => {
-  //   return notes.map((note: any) => {
-  //     return {
-  //       ...note,
-  //       tags: tags.filter((tag: any) => {
-  //         // console.log(tag);
-  //         return note.tags.includes(tag._id);
-  //       }),
-  //     };
-  //   });
-  // }, [notes, tags]);
-
   const filterNotes = useMemo(() => {
     return notes.filter((note: any) => {
       return (
         (title === '' ||
-          note.title.toLowerCase().includes(note.title.toLowerCase())) &&
+          note.title.toLowerCase().includes(title.toLowerCase())) &&
         (selectedTags.length === 0 ||
           selectedTags.every((tag) =>
             note.tags.some((noteTag: any) => noteTag._id === tag._id)

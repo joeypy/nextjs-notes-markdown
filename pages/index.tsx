@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { EditTagModal, NoteList } from '../components';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { TTag } from '../interfaces/notes.interfaces';
 import { db } from '../database';
 import { NoteModel, TagModel } from '../models';
 import Link from 'next/link';
