@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { TTag } from '../interfaces/notes.interfaces';
+import { Axios } from '../services/objectRequest';
 
 interface Props {
   data: any;
@@ -11,6 +12,17 @@ interface Props {
 
 export const Note = ({ data }: Props) => {
   const router = useRouter();
+
+  const onDelete = async () => {
+    try {
+      const resp = await Axios.delete(`/api/notes/?id=${data._id}`);
+      if (resp.status === 200) {
+        router.replace('..');
+      }
+    } catch (err: any) {
+      console.error(Error(err));
+    }
+  };
 
   return (
     <>
@@ -34,7 +46,7 @@ export const Note = ({ data }: Props) => {
             </Link>
             <Button
               onClick={() => {
-                // onDelete(note._id);
+                onDelete();
                 // navigate('/');
                 console.log('delete');
               }}
