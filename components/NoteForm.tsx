@@ -31,7 +31,11 @@ export const NoteForm = ({
       markdown: markdownRef.current!.value,
       tags: selectedTags.map((tag) => tag._id),
     });
-    router.replace('/');
+    if(note){
+      router.push(`/note/${note._id}`)
+    } else {
+      router.replace('/')
+    }
   };
 
   useEffect(() => {
@@ -50,7 +54,7 @@ export const NoteForm = ({
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
-              <Form.Control ref={titleRef} required />
+              <Form.Control ref={titleRef} defaultValue={note?.title} required />
             </Form.Group>
           </Col>
           <Col>
@@ -83,7 +87,13 @@ export const NoteForm = ({
 
         <Form.Group controlId="markdown">
           <Form.Label>Body</Form.Label>
-          <Form.Control required as="textarea" ref={markdownRef} rows={15} />
+          <Form.Control
+            defaultValue={note?.body}
+            required
+            as="textarea"
+            ref={markdownRef}
+            rows={15}
+          />
         </Form.Group>
 
         <Stack gap={2} direction="horizontal" className="justify-content-end">

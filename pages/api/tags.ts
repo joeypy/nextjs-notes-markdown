@@ -8,6 +8,7 @@ type Data = {
   message?: string;
   data?: any;
   tag?: any;
+  error?: any;
 };
 
 export default async function handler(
@@ -25,6 +26,10 @@ export default async function handler(
       }
     case 'POST':
       return createTag(req, res);
+    case 'PATCH':
+      return updateTag(req, res);
+    case 'DELETE':
+      return deleteTag(req, res);
     default:
       return res.status(400).json({
         success: false,
@@ -45,6 +50,7 @@ const getTagById = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   } catch (err: any) {
     console.error(Error(err));
+    res.status(500).json({ success: false, error: err });
   }
 };
 
@@ -58,6 +64,7 @@ const getTags = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   } catch (err: any) {
     console.error(Error(err));
+    res.status(500).json({ success: false, error: err });
   }
 };
 
@@ -71,6 +78,38 @@ const createTag = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   } catch (err: any) {
     console.error(Error(err));
-    res.status(500).json({ success: false, message: err });
+    res.status(500).json({ success: false, error: err });
+  }
+};
+
+const updateTag = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+
+  try {
+    await db.connect();
+
+    const data = await TagModel.updateOne({ _id: id }, { ...req.body });
+    res.status(200).json({ success: true, message: 'Tag Updated.', data });
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
+const deleteTag = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+
+  try {
+    await db.connect();
+
+    const data = await TagModel.findOneAndDelete({ _id: id });
+    res.status(200).json({ success: true, message: 'Tag deleted.', data });
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+    res.status(400).json({ success: false, error: err });
   }
 };

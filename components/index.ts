@@ -3,4 +3,5 @@ export * from './Layout';
 export * from './NewNote';
 export * from './NoteForm';
 export * from './NoteCard';
+export * from './EditTagModal';
 export * from './Note';

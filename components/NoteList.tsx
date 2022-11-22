@@ -42,19 +42,6 @@ export const NoteList = ({ notes, tags }: Props) => {
 
   return (
     <>
-      <Row className="align-items-center mb-4">
-        <Col>
-          <h1>Notes</h1>
-        </Col>
-        <Col xs="auto">
-          <Stack gap={2} direction="horizontal">
-            <Link href="/note/new">
-              <Button variant="primary">Create</Button>
-            </Link>
-            <Button variant="outline-secondary">Edit Tags</Button>
-          </Stack>
-        </Col>
-      </Row>
       <Form>
         <Row className="mb-4">
           <Col>

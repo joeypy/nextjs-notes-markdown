@@ -1,12 +1,15 @@
-import { NoteList } from '../components';
+import { useState } from 'react';
+import { EditTagModal, NoteList } from '../components';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { TTag } from '../interfaces/notes.interfaces';
 import { db } from '../database';
 import { NoteModel, TagModel } from '../models';
+import Link from 'next/link';
 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
 import { GetServerSideProps } from 'next';
+import { Button, Col, Row, Stack } from 'react-bootstrap';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let dataNotes: any = [];
@@ -32,11 +35,33 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function HomePage({ notes, tags }: any) {
-  // console.log('index', notes, tags);
-  // const [tags, setTags] = useLocalStorage<TTag[]>('TAGS', []);
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <div className="container">
+      <Row className="align-items-center mb-4">
+        <Col>
+          <h1>Notes</h1>
+        </Col>
+        <Col xs="auto">
+          <Stack gap={2} direction="horizontal">
+            <Link href="/note/new">
+              <Button variant="primary">Create</Button>
+            </Link>
+            <Button
+              variant="outline-secondary"
+              onClick={() => setModalShow(true)}
+            >
+              Edit Tags
+            </Button>
+          </Stack>
+        </Col>
+      </Row>
+      <EditTagModal
+        show={modalShow}
+        onHide={setModalShow}
+        tags={tags}
+      />
       <NoteList notes={notes} tags={tags} />
     </div>
   );
