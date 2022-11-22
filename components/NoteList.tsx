@@ -31,7 +31,7 @@ export const NoteList = ({ notes, tags }: Props) => {
   return (
     <>
       <Form>
-        <Row className="mb-4">
+        <Row xs={1} md={2} className="mb-4">
           <Col>
             <Form.Group>
               <Form.Label>Title</Form.Label>

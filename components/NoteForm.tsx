@@ -31,10 +31,10 @@ export const NoteForm = ({
       markdown: markdownRef.current!.value,
       tags: selectedTags.map((tag) => tag._id),
     });
-    if(note){
-      router.push(`/note/${note._id}`)
+    if (note) {
+      router.push(`/note/${note._id}`);
     } else {
-      router.replace('/')
+      router.replace('/');
     }
   };
 
@@ -50,11 +50,15 @@ export const NoteForm = ({
   return (
     <Form onSubmit={handleSubmit}>
       <Stack gap={4}>
-        <Row>
+        <Row xs={1} md={2}>
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
-              <Form.Control ref={titleRef} defaultValue={note?.title} required />
+              <Form.Control
+                ref={titleRef}
+                defaultValue={note?.title}
+                required
+              />
             </Form.Group>
           </Col>
           <Col>
