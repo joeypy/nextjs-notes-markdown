@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      tags: JSON.stringify(dataTags),
+      tags: JSON.parse(JSON.stringify(dataTags)),
     },
   };
 };
@@ -53,7 +53,7 @@ const NewNotePage = ({ tags }: any) => {
       <NoteForm
         onSubmit={onCreateNote}
         onAddTag={addTag}
-        availableTags={JSON.parse(tags)}
+        availableTags={tags}
       />
     </div>
   );

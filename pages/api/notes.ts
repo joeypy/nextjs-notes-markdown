@@ -25,6 +25,8 @@ export default async function handler(
       }
     case 'POST':
       return createNote(req, res);
+    case 'PATCH':
+      return updateNote(req, res);
     case 'DELETE':
       return deleteNote(req, res);
     default:
@@ -69,6 +71,22 @@ const createNote = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const data = await NoteModel.create(req.body);
     res.status(200).json({ success: true, data });
+
+    await db.disconnect();
+  } catch (err: any) {
+    console.error(Error(err));
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
+const updateNote = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+
+  try {
+    await db.connect();
+
+    const data = await NoteModel.updateOne({ _id: id }, { ...req.body });
+    res.status(200).json({ success: true, message: 'Note deleted.', data });
 
     await db.disconnect();
   } catch (err: any) {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
 import CreatableReactSelect from 'react-select/creatable';
@@ -9,9 +9,15 @@ interface IProps {
   onSubmit: (data: any) => void;
   onAddTag: (label: string) => any;
   availableTags: TTag[];
+  note?: any;
 }
 
-export const NoteForm = ({ onSubmit, onAddTag, availableTags }: IProps) => {
+export const NoteForm = ({
+  onSubmit,
+  onAddTag,
+  availableTags,
+  note,
+}: IProps) => {
   const [newTags, setNewTags] = useState(availableTags);
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
@@ -25,8 +31,17 @@ export const NoteForm = ({ onSubmit, onAddTag, availableTags }: IProps) => {
       markdown: markdownRef.current!.value,
       tags: selectedTags.map((tag) => tag._id),
     });
-    router.replace('..');
+    router.replace('/');
   };
+
+  useEffect(() => {
+    if (note) {
+      titleRef.current!.value = note.title;
+      markdownRef.current!.value = note.markdown;
+      setSelectedTags(note.tags);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form onSubmit={handleSubmit}>

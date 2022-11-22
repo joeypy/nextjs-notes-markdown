@@ -25,8 +25,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      notes: JSON.stringify(dataNotes),
-      tags: JSON.stringify(dataTags),
+      notes: JSON.parse(JSON.stringify(dataNotes)),
+      tags: JSON.parse(JSON.stringify(dataTags)),
     },
   };
 };
@@ -37,7 +37,7 @@ export default function HomePage({ notes, tags }: any) {
 
   return (
     <div className="container">
-      <NoteList notes={JSON.parse(notes)} tags={JSON.parse(tags)} />
+      <NoteList notes={notes} tags={tags} />
     </div>
   );
 }
