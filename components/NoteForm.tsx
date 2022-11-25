@@ -19,9 +19,8 @@ export const NoteForm = ({
   availableTags,
   note,
 }: IProps) => {
-  const [newTags, setNewTags] = useState(availableTags);
   const titleRef = useRef<HTMLInputElement>(null);
-  // const markdownRef = useRef<HTMLTextAreaElement>(null);
+  const [newTags, setNewTags] = useState(availableTags);
   const [selectedTags, setSelectedTags] = useState<TTag[]>([]);
   const [markdown, setMarkdown] = useState<string>('');
   const router = useRouter();
@@ -48,10 +47,6 @@ export const NoteForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleMarkdown = (value: string) => {
-    setMarkdown(value);
-  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -94,17 +89,6 @@ export const NoteForm = ({
             </Form.Group>
           </Col>
         </Row>
-
-        {/* <Form.Group controlId="markdown">
-          <Form.Label>Body</Form.Label>
-          <Form.Control
-            defaultValue={note?.body}
-            required
-            as="textarea"
-            ref={markdownRef}
-            rows={15}
-          />
-        </Form.Group> */}
 
         <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />
 
