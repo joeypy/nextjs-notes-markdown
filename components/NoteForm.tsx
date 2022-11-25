@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
 import CreatableReactSelect from 'react-select/creatable';
-import { TNoteData, TTag } from '../interfaces/notes.interfaces';
+import { TTag } from '../interfaces/notes.interfaces';
 import { useRouter } from 'next/router';
 import { MarkdownEditor } from './MarkdownEditor';
 
@@ -28,7 +28,6 @@ export const NoteForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(markdown);
     await onSubmit({
       title: titleRef.current!.value,
       markdown: markdown,
@@ -107,11 +106,13 @@ export const NoteForm = ({
           />
         </Form.Group> */}
 
+        <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />
+
         <Stack gap={2} direction="horizontal" className="justify-content-end">
           <Button type="submit" variant="primary">
             Save
           </Button>
-          <Link href="..">
+          <Link href={`/note/${note._id}`}>
             <Button type="button" variant="outline-secondary">
               Cancel
             </Button>

@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Axios } from '../services/objectRequest';
+import rehypeRaw from "rehype-raw";
 
 interface Props {
   data: any;
@@ -58,7 +59,7 @@ export const Note = ({ data }: Props) => {
           </Stack>
         </Col>
       </Row>
-      <ReactMarkdown>{data?.markdown}</ReactMarkdown>
+      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{data?.markdown}</ReactMarkdown>
     </>
   );
 };
