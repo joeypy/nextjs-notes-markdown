@@ -1,5 +1,5 @@
 import React from 'react';
-import { TNoteData, TRawNoteData, TTag } from '../interfaces/notes.interfaces';
+import { TNoteData, TTag } from '../interfaces/notes.interfaces';
 import { NoteForm } from './NoteForm';
 
 interface Props {

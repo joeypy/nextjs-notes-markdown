@@ -1,9 +1,7 @@
-import Link from 'next/link';
 import { useState, useMemo } from 'react';
-import { Row, Col, Stack, Button, Form } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import ReactSelect from 'react-select';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { TRawNote, TTag } from '../interfaces/notes.interfaces';
+import { TTag } from '../interfaces/notes.interfaces';
 import { NoteCard } from './';
 
 interface Props {

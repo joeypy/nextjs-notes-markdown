@@ -4,6 +4,7 @@ import Link from 'next/link';
 import CreatableReactSelect from 'react-select/creatable';
 import { TNoteData, TTag } from '../interfaces/notes.interfaces';
 import { useRouter } from 'next/router';
+import { MarkdownEditor } from './MarkdownEditor';
 
 interface IProps {
   onSubmit: (data: any) => void;
@@ -20,15 +21,17 @@ export const NoteForm = ({
 }: IProps) => {
   const [newTags, setNewTags] = useState(availableTags);
   const titleRef = useRef<HTMLInputElement>(null);
-  const markdownRef = useRef<HTMLTextAreaElement>(null);
+  // const markdownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<TTag[]>([]);
+  const [markdown, setMarkdown] = useState<string>('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(markdown);
     await onSubmit({
       title: titleRef.current!.value,
-      markdown: markdownRef.current!.value,
+      markdown: markdown,
       tags: selectedTags.map((tag) => tag._id),
     });
     if (note) {
@@ -41,11 +44,15 @@ export const NoteForm = ({
   useEffect(() => {
     if (note) {
       titleRef.current!.value = note.title;
-      markdownRef.current!.value = note.markdown;
+      setMarkdown(note.markdown);
       setSelectedTags(note.tags);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleMarkdown = (value: string) => {
+    setMarkdown(value);
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -89,7 +96,7 @@ export const NoteForm = ({
           </Col>
         </Row>
 
-        <Form.Group controlId="markdown">
+        {/* <Form.Group controlId="markdown">
           <Form.Label>Body</Form.Label>
           <Form.Control
             defaultValue={note?.body}
@@ -98,7 +105,7 @@ export const NoteForm = ({
             ref={markdownRef}
             rows={15}
           />
-        </Form.Group>
+        </Form.Group> */}
 
         <Stack gap={2} direction="horizontal" className="justify-content-end">
           <Button type="submit" variant="primary">

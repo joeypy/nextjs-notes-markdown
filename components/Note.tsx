@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react';
 import { Row, Col, Stack, Badge, Button } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { TTag } from '../interfaces/notes.interfaces';
 import { Axios } from '../services/objectRequest';
 
 interface Props {

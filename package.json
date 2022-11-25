@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "^5.8.3",
+    "@mantine/hooks": "^5.8.3",
+    "@mantine/tiptap": "^5.8.3",
+    "@tabler/icons": "^1.113.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
@@ -16,6 +20,7 @@
     "bootstrap": "^5.2.2",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
+    "lowlight": "^2.8.0",
     "mongoose": "^6.7.2",
     "next": "13.0.4",
     "react": "18.2.0",
