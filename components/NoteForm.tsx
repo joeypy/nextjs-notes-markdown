@@ -112,7 +112,7 @@ export const NoteForm = ({
           <Button type="submit" variant="primary">
             Save
           </Button>
-          <Link href={`/note/${note._id}`}>
+          <Link href={note ? `/note/${note._id}` : '..'}>
             <Button type="button" variant="outline-secondary">
               Cancel
             </Button>
