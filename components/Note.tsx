@@ -1,9 +1,9 @@
 import { Row, Col, Stack, Badge, Button } from 'react-bootstrap';
-import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Axios } from '../services/objectRequest';
-import rehypeRaw from "rehype-raw";
+import { PreviewMarkdown } from './PreviewMarkdown';
+
 
 interface Props {
   data: any;
@@ -58,8 +58,10 @@ export const Note = ({ data }: Props) => {
             </Link>
           </Stack>
         </Col>
+
+        <PreviewMarkdown markdownText={data?.markdown}/>
       </Row>
-      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{data?.markdown}</ReactMarkdown>
+      
     </>
   );
 };
